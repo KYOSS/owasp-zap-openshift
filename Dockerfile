@@ -20,7 +20,7 @@ RUN pip install python-owasp-zap-v2.4
 
 RUN mkdir -p /zap 
 WORKDIR /zap
-RUN chown 1001:1001 /zap -R
+RUN chown root:65534 /zap -R
 
 #Change to the zap user so things get done as the right person (apart from copy)
 
@@ -36,7 +36,7 @@ RUN yum clean all && \
     rpm -V $INSTALL_PKGS && \
     yum clean all && \
     mkdir -p /var/lib/jenkins && \
-    chown -R 1001:1001 /var/lib/jenkins && \
+    chown -R root:65534 /var/lib/jenkins && \
     chmod -R g+w /var/lib/jenkins
 
 # Copy the entrypoint
@@ -67,15 +67,15 @@ COPY policies /var/lib/jenkins/.ZAP/policies/
 COPY .xinitrc /var/lib/jenkins/
 RUN mkdir /zap/wrk
 
-RUN chown 1001:1001 /zap/zap-x.sh && \
-	chown 1001:1001 /zap/zap-baseline.py && \
-	chown 1001:1001 /zap/zap-webswing.sh && \
-	chown 1001:1001 /zap/webswing-2.3/webswing.config && \
-	chown 1001:1001 -R /var/lib/jenkins/.ZAP/ && \
-	chown 1001:1001 /var/lib/jenkins/.xinitrc && \
+RUN chown root:65534 /zap/zap-x.sh && \
+	chown root:65534 /zap/zap-baseline.py && \
+	chown root:65534 /zap/zap-webswing.sh && \
+	chown root:65534 /zap/webswing-2.3/webswing.config && \
+	chown root:65534 -R /var/lib/jenkins/.ZAP/ && \
+	chown root:65534 /var/lib/jenkins/.xinitrc && \
 	chmod 775 /var/lib/jenkins -R && \
 	chmod 775 /zap -R && \
-	chown 1001:1001 /var/lib/jenkins -R
+	chown root:65534 /var/lib/jenkins -R
 
 # Run the Jenkins JNLP client
 ENTRYPOINT ["/usr/local/bin/run-jnlp-client"]
