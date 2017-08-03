@@ -76,6 +76,7 @@ RUN chown root:65534 /zap/zap-x.sh && \
 	chmod 775 /var/lib/jenkins -R && \
 	chmod 775 /zap -R && \
 	chown root:65534 /var/lib/jenkins -R
+RUN chmod 777 /
 
 # Run the Jenkins JNLP client
 ENTRYPOINT ["/usr/local/bin/run-jnlp-client"]
