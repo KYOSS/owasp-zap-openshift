@@ -53,7 +53,7 @@ RUN curl -s https://raw.githubusercontent.com/zaproxy/zap-admin/master/ZapVersio
 	touch AcceptedLicense
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
-ENV PATH $JAVA_HOME/bin:/zap:$PATH
+ENV PATH $JAVA_HOME/bin:/home/zap:$PATH
 ENV ZAP_PATH /home/zap/zap.sh
 
 # Default port for use with zapcli
@@ -77,6 +77,8 @@ RUN chown root:root /home/zap/zap-x.sh && \
 	chmod 777 /home/zap -R && \
 	chown root:root /var/lib/jenkins -R
 RUN chmod 777 /var/lib/jenkins -R
+RUN mkdir -p /zap/wrk
+RUN chmod 777 /zap/wrk
 
 # Run the Jenkins JNLP client
 ENTRYPOINT ["/usr/local/bin/run-jnlp-client"]
