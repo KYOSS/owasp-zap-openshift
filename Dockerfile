@@ -18,9 +18,9 @@ RUN pip install zapcli
 # Install latest dev version of the python API
 RUN pip install python-owasp-zap-v2.4
 
-RUN mkdir -p /zap 
-WORKDIR /zap
-RUN chown root:65534 /zap -R
+RUN mkdir -p /home/zap 
+WORKDIR /home/zap
+RUN chown root:root /home/zap -R
 
 #Change to the zap user so things get done as the right person (apart from copy)
 
@@ -36,7 +36,7 @@ RUN yum clean all && \
     rpm -V $INSTALL_PKGS && \
     yum clean all && \
     mkdir -p /var/lib/jenkins && \
-    chown -R root:65534 /var/lib/jenkins && \
+    chown -R root:root /var/lib/jenkins && \
     chmod -R g+w /var/lib/jenkins
 
 # Copy the entrypoint
@@ -54,29 +54,28 @@ RUN curl -s https://raw.githubusercontent.com/zaproxy/zap-admin/master/ZapVersio
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 ENV PATH $JAVA_HOME/bin:/zap:$PATH
-ENV ZAP_PATH /zap/zap.sh
+ENV ZAP_PATH /home/zap/zap.sh
 
 # Default port for use with zapcli
 ENV ZAP_PORT 8080
 
-COPY zap-x.sh /zap/ 
-COPY zap-* /zap/ 
-COPY zap_* /zap/ 
-COPY webswing.config /zap/webswing-2.3/ 
+COPY zap-x.sh /home/zap/ 
+COPY zap-* /home/zap/ 
+COPY zap_* /home/zap/ 
+COPY webswing.config /home/zap/webswing-2.3/ 
 COPY policies /var/lib/jenkins/.ZAP/policies/
 COPY .xinitrc /var/lib/jenkins/
-RUN mkdir /zap/wrk
+RUN mkdir /home/zap/wrk
 
-RUN chown root:65534 /zap/zap-x.sh && \
-	chown root:65534 /zap/zap-baseline.py && \
-	chown root:65534 /zap/zap-webswing.sh && \
-	chown root:65534 /zap/webswing-2.3/webswing.config && \
-	chown root:65534 -R /var/lib/jenkins/.ZAP/ && \
-	chown root:65534 /var/lib/jenkins/.xinitrc && \
-	chmod 775 /var/lib/jenkins -R && \
-	chmod 775 /zap -R && \
-	chown root:65534 /var/lib/jenkins -R
-RUN chmod 777 /
+RUN chown root:root /home/zap/zap-x.sh && \
+	chown root:root /home/zap/zap-baseline.py && \
+	chown root:root /home/zap/zap-webswing.sh && \
+	chown root:root /home/zap/webswing-2.3/webswing.config && \
+	chown root:root -R /var/lib/jenkins/.ZAP/ && \
+	chown root:root /var/lib/jenkins/.xinitrc && \
+	chmod 777 /var/lib/jenkins -R && \
+	chmod 777 /home/zap -R && \
+	chown root:root /var/lib/jenkins -R
 RUN chmod 777 /var/lib/jenkins -R
 
 # Run the Jenkins JNLP client
