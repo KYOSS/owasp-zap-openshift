@@ -65,7 +65,6 @@ COPY zap_* /home/zap/
 COPY webswing.config /home/zap/webswing-2.3/ 
 COPY policies /var/lib/jenkins/.ZAP/policies/
 COPY .xinitrc /var/lib/jenkins/
-RUN mkdir /home/zap/wrk
 
 RUN chown root:root /home/zap/zap-x.sh && \
 	chown root:root /home/zap/zap-baseline.py && \
@@ -77,8 +76,9 @@ RUN chown root:root /home/zap/zap-x.sh && \
 	chmod 777 /home/zap -R && \
 	chown root:root /var/lib/jenkins -R
 RUN chmod 777 /var/lib/jenkins -R
-RUN mkdir -p /zap/wrk
-RUN chmod 777 /zap/wrk
+RUN mkdir -p /zap/wrk && \
+    chmod 777 /zap/wrk && \
+    sync
 
 # Run the Jenkins JNLP client
 ENTRYPOINT ["/usr/local/bin/run-jnlp-client"]
